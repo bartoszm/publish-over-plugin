@@ -242,6 +242,23 @@ public class BPInstanceConfigTest {
         assertResult(Result.SUCCESS, instanceConfig);
     }
 
+    @Test
+    public void testParametrizedConfigName() throws Exception {
+            String paramName="PARAM";
+            buildInfo.getCurrentBuildEnv().getEnvVars().put(paramName, hostConfiguration.getName());
+            //reseting mock behaviour for this specific test
+            Mockito.reset(mockHostConfigurationAccess);
+            Mockito.when(mockHostConfigurationAccess.getConfiguration(hostConfiguration.getName())).thenReturn(hostConfiguration);
+
+            final BPInstanceConfig instanceConfig = createInstanceConfig(publishers, false, false, false, "master");
+            instanceConfig.setHostConfigurationAccess(mockHostConfigurationAccess);
+            final BapPublisher mockPublisher = createAndAddMockPublisher("$"+paramName);
+            mockPublisher.perform(hostConfiguration, buildInfo);
+            assertResult(Result.SUCCESS, instanceConfig);
+
+            assertFalse(buildInfo.getCurrentBuildEnv().getEnvVars().containsKey(BPBuildInfo.ENV_NODE_NAME));
+        }
+
     private BapPublisher createLabeledPublisher(final String label, final boolean expectPerform) throws Exception {
         final BapPublisher mockPublisher = mockControl.createMock(BapPublisher.class);
         mockPublisher.setEffectiveEnvironmentInBuildInfo((BPBuildInfo) EasyMock.anyObject());

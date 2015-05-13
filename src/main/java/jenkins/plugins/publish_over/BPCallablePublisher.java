@@ -26,6 +26,7 @@ package jenkins.plugins.publish_over;
 
 import hudson.FilePath;
 import hudson.remoting.VirtualChannel;
+import org.jenkinsci.remoting.RoleChecker;
 
 import java.io.File;
 import java.io.IOException;
@@ -79,4 +80,8 @@ public class BPCallablePublisher implements FilePath.FileCallable<Void> {
         }
     }
 
+    @Override
+    public void checkRoles(RoleChecker roleChecker) throws SecurityException {
+        //for the moment not important
+    }
 }

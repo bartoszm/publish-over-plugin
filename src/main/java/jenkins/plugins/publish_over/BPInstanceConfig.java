@@ -24,6 +24,7 @@
 
 package jenkins.plugins.publish_over;
 
+import hudson.Util;
 import hudson.model.Result;
 import org.apache.commons.lang.builder.EqualsBuilder;
 import org.apache.commons.lang.builder.HashCodeBuilder;
@@ -130,7 +131,9 @@ public class BPInstanceConfig<PUBLISHER extends BapPublisher> implements Seriali
             publisher.setEffectiveEnvironmentInBuildInfo(buildInfo);
             if (!selector.selected(publisher)) continue;
             try {
-                final BPHostConfiguration hostConfig = getConfiguration(publisher.getConfigName());
+                final String configName = Util.replaceMacro(publisher.getConfigName(), buildInfo.getEnvVars());
+
+                final BPHostConfiguration hostConfig = getConfiguration(configName);
                 final BPCallablePublisher callablePublisher = new BPCallablePublisher(publisher, hostConfig, buildInfo);
                 if (alwaysPublishFromMaster)
                     callablePublisher.invoke(null, null);

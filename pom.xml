@@ -29,7 +29,7 @@
     <parent>
         <groupId>org.jenkins-ci.plugins</groupId>
         <artifactId>plugin</artifactId>
-        <version>1.532.1</version>
+        <version>1.613</version>
     </parent>
 
     <groupId>org.jenkins-ci.plugins</groupId>
@@ -138,7 +138,7 @@
                         <artifactId>maven-pmd-plugin</artifactId>
                         <version>2.5</version>
                         <configuration>
-                            <targetJdk>1.5</targetJdk>
+                            <targetJdk>1.7</targetJdk>
                             <includeTests>true</includeTests>
                             <rulesets>
                                 <ruleset>src/metrics/pmd_rules.xml</ruleset>
@@ -180,6 +180,14 @@
 			</plugins>
 		</pluginManagement>
 		<plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>1.7</source>
+                    <target>1.7</target>
+                </configuration>
+            </plugin>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>build-helper-maven-plugin</artifactId>
